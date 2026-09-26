@@ -1,67 +1,62 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { ref, onValue } from "firebase/database"
 import PropertyCard from "../components/PropertyCard"
 import { Property } from "../types/property"
 import { db } from "../lib/firebase"
 
 export default function PropertiesPage() {
+  const searchParams = useSearchParams()
+  const urlType = searchParams.get("type") // e.g., "apartment", "villa", "office"
+
   const [search, setSearch] = useState("")
   const [type, setType] = useState("all")
   const [minPrice, setMinPrice] = useState("")
   const [maxPrice, setMaxPrice] = useState("")
   const [sort, setSort] = useState("newest")
 
-  // properties — stores real data from Firebase
-  // starts as empty array while loading
   const [properties, setProperties] = useState<Property[]>([])
-
-  // loading — true while fetching from Firebase
   const [loading, setLoading] = useState(true)
 
-  // useEffect — fetch data when component mounts
+  // Sync state if the user clicks a different navbar link while already on the page
   useEffect(() => {
+    if (urlType) {
+      setType(urlType.toLowerCase())
+    } else {
+      setType("all")
+    }
+  }, [urlType])
 
-    // point to "properties" in Firebase
+  // Fetch real-time data from Firebase
+  useEffect(() => {
     const propertiesRef = ref(db, "properties")
 
-    // onValue listens for ANY change in real time
-    // whenever agent adds/edits/deletes — this runs automatically
     const unsubscribe = onValue(propertiesRef, (snapshot) => {
-
-      // snapshot.val() — gets the raw data from Firebase
       const data = snapshot.val()
 
       if (data) {
-        // Convert Firebase object to array
-        // Object.entries gives us [[key, value], [key, value]]
-        // We map each pair to a property object with id
-       const propertiesArray = Object.entries(data).map(([key, value]) => ({
-  id: key,
-  ...(value as object)
-})) as Property[]
+        const propertiesArray = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...(value as object),
+        })) as Property[]
         setProperties(propertiesArray)
       } else {
-        // No properties in database yet
         setProperties([])
       }
 
-      // data loaded — stop showing loading state
       setLoading(false)
     })
 
-    // cleanup — stop listening when component unmounts
-    // this prevents memory leaks
     return () => unsubscribe()
+  }, [])
 
-  }, []) // empty array — only runs once when page loads
-
-  // Filter logic — same as before but using real data
+  // Filter and sort logic
   const filtered = properties.filter((p: Property) => {
     const matchSearch = p.title?.toLowerCase().includes(search.toLowerCase()) ||
       p.location?.toLowerCase().includes(search.toLowerCase())
-    const matchType = type === "all" || p.type === type
+    const matchType = type === "all" || p.type?.toLowerCase() === type.toLowerCase()
     const matchMin = minPrice === "" || p.price >= Number(minPrice)
     const matchMax = maxPrice === "" || p.price <= Number(maxPrice)
     return matchSearch && matchType && matchMin && matchMax
@@ -77,8 +72,8 @@ export default function PropertiesPage() {
       {/* Header */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Properties in UAE
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 capitalize">
+            {type === "all" ? "Properties in UAE" : `${type}s in UAE`}
           </h1>
           <p className="text-gray-500">
             {loading ? "Loading..." : `${filtered.length} properties found`}
@@ -89,7 +84,7 @@ export default function PropertiesPage() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
 
-          {/* FILTER SIDEBAR */}
+          {/* FILTER SIDEBAR (Kept Intact) */}
           <div className="w-full lg:w-64 shrink-0">
             <div className="bg-white rounded-2xl border border-gray-100 p-6 sticky top-24">
               <h3 className="font-bold text-gray-900 mb-6">Filters</h3>
@@ -204,10 +199,10 @@ export default function PropertiesPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20">
-                <div className="text-5xl mb-4">🔍</div>
+              <div className="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <div className="text-5xl mb-4">🏠</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">No properties found</h3>
-                <p className="text-gray-500 text-sm">Try adjusting your filters</p>
+                <p className="text-gray-500 text-sm">There are no properties matching this category yet.</p>
               </div>
             )}
           </div>
