@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Project Title:
+PropertyHub — AI Powered Real Estate Platform
 
-## Getting Started
+Project Description:
 
-First, run the development server:
+PropertyHub is a full stack real estate platform built for the UAE market that connects property agents with potential buyers and tenants across Abu Dhabi and Dubai.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The platform allows agents to register, create and manage property listings with multiple images, and uses Google Gemini AI to automatically generate professional property descriptions. Buyers can browse, search and filter properties by type, location and price range in real time.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Key Features:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Role based authentication — separate buyer and agent experience
+AI powered property description generator using Google Gemini API
+Real time property listings with advanced search and filter
+Multi step property listing form with Cloudinary image upload
+Interactive maps using Leaflet.js and OpenStreetMap
+Agent dashboard with full CRUD — create, edit, delete listings
+Forgot password with email reset functionality
+Fully responsive design for mobile and desktop
+Real time data updates using Firebase Realtime Database
+Deployed on Vercel with automatic CI/CD from GitHub
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Technologies Used:
 
-## Learn More
+Next.js 15 with App Router
+TypeScript
+Tailwind CSS
+Firebase Authentication
+Firebase Realtime Database
+Cloudinary — image storage
+Google Gemini AI API
+Leaflet.js — interactive maps
+Vercel — deployment
 
-To learn more about Next.js, take a look at the following resources:
+Live URL: property-hub-uae.vercel.app
+GitHub: github.com/jaweria961/property-hub
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For Naukri Gulf profile — Role description:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Built a full stack real estate platform from scratch using Next.js 15, TypeScript and Firebase. Implemented Google Gemini AI integration for automated property description generation, Firebase authentication with role based access control, Cloudinary image management, and real time data synchronization. Deployed on Vercel with CI/CD pipeline.
 
-## Deploy on Vercel
+Skills to add on Naukri Gulf from this project:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js
+TypeScript
+React.js
+Firebase
+Tailwind CSS
+REST APIs
+AI Integration
+Cloudinary
+Git/GitHub
+Vercel Deployment
+Full Stack Development
